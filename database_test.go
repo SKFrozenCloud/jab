@@ -21,7 +21,7 @@ func TestSetupFileHashDatabase(t *testing.T) {
 	fileFour.WriteString("testcontent4")
 
 	directoryFour, _ := os.MkdirTemp("", "jab_database_test_four")
-	fileFive, _ := os.CreateTemp(directoryThree, "filefive")
+	fileFive, _ := os.CreateTemp(directoryFour, "filefive")
 	fileFive.WriteString("testcontent5")
 
 	fileSix, _ := os.CreateTemp("", "filesix")
