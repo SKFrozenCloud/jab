@@ -24,15 +24,22 @@ func TestSetupFileHashDatabase(t *testing.T) {
 	fileFive, _ := os.CreateTemp(directoryThree, "filefive")
 	fileFive.WriteString("testcontent5")
 
+	fileSix, _ := os.CreateTemp("", "filesix")
+	fileSix.WriteString("testcontent6")
+	fileSeven, _ := os.CreateTemp("", "fileseven")
+	fileSeven.WriteString("testcontent7")
+
 	correctDB := FileHashDatabase{}
 	correctDB[FilePath(fileOne.Name())] = "19e1c0dda4fbdd75d6f0d31e5e28b2a4103b370049909bb485ebacf297c8952f"
 	correctDB[FilePath(fileTwo.Name())] = "f25b7c4a9e88d251b5942c7d7a2c6480eef3e07195f9b7063ca332702edeaff9"
 	correctDB[FilePath(fileThree.Name())] = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 	correctDB[FilePath(fileFour.Name())] = "d12ebbd2f807bf53517dd8e8eed737a919e4d2f2b3952d62a52b23fcd53a3109"
 	correctDB[FilePath(fileFive.Name())] = "2b4a26d3dceacce9b09c4faddd5594d6113235d0fb03ff1bd70bf27a2b7f7dc7"
+	correctDB[FilePath(fileSix.Name())] = "c2d098c3d20d3d6e321689f26377b72424e72704edfa331d5c30e08d0ef97b32"
+	correctDB[FilePath(fileSeven.Name())] = "f004d515b6bd74a6f052bbf5f24b4c08b0d990e8c5811e3721a4642584b9a754"
 
 	// Execute
-	db, err := SetupFileHashDatabase([]string{directoryOne, directoryFour})
+	db, err := SetupFileHashDatabase([]string{directoryOne, directoryFour, fileSix.Name(), fileSeven.Name()})
 	if err != nil {
 		t.Error("could not create file hash database")
 	}
