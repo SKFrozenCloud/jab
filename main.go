@@ -1,7 +1,17 @@
 package main
 
-import "fmt"
+var (
+	DBFile = "hashes.db"
+	AESKey = ""
+)
 
 func main() {
-	fmt.Println("Hello, world.")
+	// Monitor function
+	// - Create empty database
+	// - Walk through all files and directories
+	// 		- Calculate hashes & append to new database
+	// - Load old hash database
+	// - Compare the hashes
+	// - Save new hash database
+	// Periodically call monitor funciton with channel
 }
