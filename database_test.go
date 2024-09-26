@@ -68,6 +68,18 @@ func TestSetupFileHashDatabase(t *testing.T) {
 	if err != nil {
 		t.Error("could not remove temporary directory")
 	}
+	err = os.RemoveAll(directoryFour)
+	if err != nil {
+		t.Error("could not remove temporary directory")
+	}
+	err = os.Remove(fileSix.Name())
+	if err != nil {
+		t.Error("could not remove temporary file")
+	}
+	err = os.Remove(fileSeven.Name())
+	if err != nil {
+		t.Error("could not remove temporary file")
+	}
 
 	//// Test empty directory
 	// Setup
