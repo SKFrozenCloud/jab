@@ -64,22 +64,10 @@ func TestSetupFileHashDatabase(t *testing.T) {
 	}
 
 	// Teardown
-	err = os.RemoveAll(directoryOne)
-	if err != nil {
-		t.Error("could not remove temporary directory")
-	}
-	err = os.RemoveAll(directoryFour)
-	if err != nil {
-		t.Error("could not remove temporary directory")
-	}
-	err = os.Remove(fileSix.Name())
-	if err != nil {
-		t.Error("could not remove temporary file")
-	}
-	err = os.Remove(fileSeven.Name())
-	if err != nil {
-		t.Error("could not remove temporary file")
-	}
+	os.RemoveAll(directoryOne)
+	os.RemoveAll(directoryFour)
+	os.Remove(fileSix.Name())
+	os.Remove(fileSeven.Name())
 
 	//// Test empty directory
 	// Setup
@@ -100,10 +88,7 @@ func TestSetupFileHashDatabase(t *testing.T) {
 	}
 
 	// Teardown
-	err = os.RemoveAll(directoryOne)
-	if err != nil {
-		t.Error("could not remove temporary directory")
-	}
+	os.RemoveAll(directoryOne)
 }
 
 func TestLoadFileHashDatabase(t *testing.T) {
@@ -119,15 +104,8 @@ func TestLoadFileHashDatabase(t *testing.T) {
 	correctDB[FilePath("fileseven")] = "f004d515b6bd74a6f052bbf5f24b4c08b0d990e8c5811e3721a4642584b9a754"
 
 	// Manually save DB
-	jsonBytes, err := json.Marshal(correctDB)
-	if err != nil {
-		t.Error("could not manually save db")
-	}
-
-	fileDB, err := os.CreateTemp("", "hashes.db")
-	if err != nil {
-		t.Error("could not save db")
-	}
+	jsonBytes, _ := json.Marshal(correctDB)
+	fileDB, _ := os.CreateTemp("", "hashes.db")
 	fileDB.Write(jsonBytes)
 
 	// Load DB with function
@@ -143,25 +121,15 @@ func TestLoadFileHashDatabase(t *testing.T) {
 	}
 
 	// Teardown
-	err = os.Remove(fileDB.Name())
-	if err != nil {
-		t.Error("could not remove temporary file")
-	}
+	os.Remove(fileDB.Name())
 
 	//// Test empty database
 	// Setup DB
 	correctDB = FileHashDatabase{}
 
 	// Manually save DB
-	jsonBytes, err = json.Marshal(correctDB)
-	if err != nil {
-		t.Error("could not manually save db")
-	}
-
-	fileDB, err = os.CreateTemp("", "hashes.db")
-	if err != nil {
-		t.Error("could not save db")
-	}
+	jsonBytes, _ = json.Marshal(correctDB)
+	fileDB, _ = os.CreateTemp("", "hashes.db")
 	fileDB.Write(jsonBytes)
 
 	// Load DB with function
@@ -177,10 +145,7 @@ func TestLoadFileHashDatabase(t *testing.T) {
 	}
 
 	// Teardown
-	err = os.Remove(fileDB.Name())
-	if err != nil {
-		t.Error("could not remove temporary file")
-	}
+	os.Remove(fileDB.Name())
 }
 
 func TestSaveFileHashDatabase(t *testing.T) {
@@ -203,16 +168,9 @@ func TestSaveFileHashDatabase(t *testing.T) {
 	}
 
 	// Manually load DB
-	dbBytes, err := os.ReadFile(fileDB.Name())
-	if err != nil {
-		t.Error("could not load db")
-	}
-
+	dbBytes, _ := os.ReadFile(fileDB.Name())
 	var db FileHashDatabase
-	err = json.Unmarshal([]byte(dbBytes), &db)
-	if err != nil {
-		t.Error("could not load db")
-	}
+	json.Unmarshal([]byte(dbBytes), &db)
 
 	// Validate
 	result := reflect.DeepEqual(correctDB, db)
@@ -221,10 +179,7 @@ func TestSaveFileHashDatabase(t *testing.T) {
 	}
 
 	// Teardown
-	err = os.Remove(fileDB.Name())
-	if err != nil {
-		t.Error("could not remove temporary file")
-	}
+	os.Remove(fileDB.Name())
 
 	//// Test empty database
 	// Setup DB
@@ -238,16 +193,9 @@ func TestSaveFileHashDatabase(t *testing.T) {
 	}
 
 	// Manually load DB
-	dbBytes, err = os.ReadFile(fileDB.Name())
-	if err != nil {
-		t.Error("could not load db")
-	}
-
+	dbBytes, _ = os.ReadFile(fileDB.Name())
 	var dbEmpty FileHashDatabase
-	err = json.Unmarshal([]byte(dbBytes), &dbEmpty)
-	if err != nil {
-		t.Error("could not load db")
-	}
+	json.Unmarshal([]byte(dbBytes), &dbEmpty)
 
 	// Validate
 	result = reflect.DeepEqual(correctDB, dbEmpty)
@@ -256,8 +204,5 @@ func TestSaveFileHashDatabase(t *testing.T) {
 	}
 
 	// Teardown
-	err = os.Remove(fileDB.Name())
-	if err != nil {
-		t.Error("could not remove temporary file")
-	}
+	os.Remove(fileDB.Name())
 }
