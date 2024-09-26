@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -54,5 +55,35 @@ func databaseHashFile(path string, db FileHashDatabase) error {
 	}
 
 	db[FilePath(path)] = FileHash(hash)
+	return nil
+}
+
+func LoadFileHashDatabase(databasePath string) (FileHashDatabase, error) {
+	dbBytes, err := os.ReadFile(databasePath)
+	if err != nil {
+		return nil, err
+	}
+
+	var db FileHashDatabase
+	err = json.Unmarshal([]byte(dbBytes), &db)
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
+func SaveFileHashDatabase(db FileHashDatabase, databasePath string) error {
+	jsonBytes, err := json.Marshal(db)
+	if err != nil {
+		return err
+	}
+
+	fileDB, err := os.Create(databasePath)
+	if err != nil {
+		return err
+	}
+	fileDB.Write(jsonBytes)
+
 	return nil
 }
