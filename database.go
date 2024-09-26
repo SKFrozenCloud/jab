@@ -20,7 +20,7 @@ func SetupFileHashDatabase(paths []string) (FileHashDatabase, error) {
 	for _, path := range paths {
 		stat, err := os.Stat(path)
 		if err != nil {
-			panic(err)
+			continue
 		}
 
 		if !stat.IsDir() {
