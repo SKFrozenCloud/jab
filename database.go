@@ -26,7 +26,7 @@ func SetupFileHashDatabase(paths []string) (FileHashDatabase, error) {
 		if !stat.IsDir() {
 			// Files
 			// Calculate hashes & append to new database
-			databaseHashFile(path, fileHashDatabase)
+			addHashFileToDatabase(path, fileHashDatabase)
 		} else {
 			// Directories
 			filepath.WalkDir(
@@ -37,7 +37,7 @@ func SetupFileHashDatabase(paths []string) (FileHashDatabase, error) {
 					}
 
 					// Calculate hashes & append to new database
-					databaseHashFile(path, fileHashDatabase)
+					addHashFileToDatabase(path, fileHashDatabase)
 
 					return nil
 				},
@@ -48,7 +48,7 @@ func SetupFileHashDatabase(paths []string) (FileHashDatabase, error) {
 	return fileHashDatabase, nil
 }
 
-func databaseHashFile(path string, db FileHashDatabase) error {
+func addHashFileToDatabase(path string, db FileHashDatabase) error {
 	hash, err := HashFile(path)
 	if err != nil {
 		return err
