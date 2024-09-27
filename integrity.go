@@ -22,9 +22,9 @@ type IntegrityChanges struct {
 	Removed  []IntegrityChangesRemoved
 }
 
-func MonitorIntegrityOnce(dbPath string, monitorPaths []string) (IntegrityChanges, error) {
+func CheckIntegrity(dbPath string, checkPaths []string) (IntegrityChanges, error) {
 	//// Setup a new database
-	newDB, err := SetupFileHashDatabase(monitorPaths)
+	newDB, err := SetupFileHashDatabase(checkPaths)
 	if err != nil {
 		return IntegrityChanges{}, err
 	}

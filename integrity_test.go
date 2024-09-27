@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestMonitorIntegrityOnce(t *testing.T) {
+func TestCheckIntegrity(t *testing.T) {
 	//// Test a normal scenario
 	// Setup
 	directoryOne, _ := os.MkdirTemp("", "jab_database_test_one")
@@ -62,14 +62,14 @@ func TestMonitorIntegrityOnce(t *testing.T) {
 
 	// Execute
 	fileDB, _ := os.CreateTemp("", "hashes.db")
-	integrityChanges, err := MonitorIntegrityOnce(fileDB.Name(), []string{
+	integrityChanges, err := CheckIntegrity(fileDB.Name(), []string{
 		directoryOne,
 		directoryFour,
 		fileSix.Name(),
 		fileSeven.Name(),
 	})
 	if err != nil {
-		t.Error("could not monitor integrity")
+		t.Error("could not check integrity")
 	}
 
 	if len(integrityChanges.Added) != 7 || len(integrityChanges.Modified) != 0 || len(integrityChanges.Removed) != 0 {
@@ -136,14 +136,14 @@ func TestMonitorIntegrityOnce(t *testing.T) {
 	}
 
 	// Execute
-	integrityChanges, err = MonitorIntegrityOnce(fileDB.Name(), []string{
+	integrityChanges, err = CheckIntegrity(fileDB.Name(), []string{
 		directoryOne,
 		directoryFour,
 		fileSix.Name(),
 		fileSeven.Name(),
 	})
 	if err != nil {
-		t.Error("could not monitor integrity")
+		t.Error("could not check integrity")
 	}
 
 	if len(integrityChanges.Added) != 1 || len(integrityChanges.Modified) != 3 || len(integrityChanges.Removed) != 2 {
