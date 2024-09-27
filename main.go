@@ -1,8 +1,14 @@
 package main
 
+import (
+	"fmt"
+	"time"
+)
+
 var (
 	DBFile                       = "hashes.db"
 	AESKey                       = ""
+	CheckIntervalSeconds         = 60
 	SensitiveFilesAndDirectories = []string{
 		// System Configuration Files
 		"/etc/passwd",
@@ -63,6 +69,30 @@ var (
 )
 
 func main() {
-	// Monitor functions with channel
-	// Periodically call monitor funciton with channel
+	fmt.Println("Starting monitoring file integrity...")
+
+	for {
+		// Running
+		fmt.Println("Checking integrity...")
+		integrityChanges, err := CheckIntegrity(DBFile, SensitiveFilesAndDirectories)
+		if err != nil {
+			fmt.Printf("Error: %v", err)
+		}
+
+		// Result
+		fmt.Println("Files added:")
+		for i, v := range integrityChanges.Added {
+			fmt.Printf("Added file number %v; Path: %v\n", i, v.FilePath)
+		}
+		fmt.Println("Files modified:")
+		for i, v := range integrityChanges.Modified {
+			fmt.Printf("Modified file number %v; Path: %v\n", i, v.FilePath)
+		}
+		fmt.Println("Files removed:")
+		for i, v := range integrityChanges.Removed {
+			fmt.Printf("Removed file number %v; Path: %v\n", i, v.FilePath)
+		}
+
+		time.Sleep(time.Duration(CheckIntervalSeconds) * time.Second)
+	}
 }
