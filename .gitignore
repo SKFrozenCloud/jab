@@ -1,2 +1,5 @@
 # Executable file
 main
+
+# Test database
+hashes.db
