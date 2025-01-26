@@ -88,6 +88,7 @@ func SaveFileHashDatabase(db FileHashDatabase, databasePath string) error {
 	if err != nil {
 		return err
 	}
+	defer fileDB.Close()
 
 	jsonBytesEncrypted, err := SignAndEncrypt(string(jsonBytes), AESKey)
 	if err != nil {
