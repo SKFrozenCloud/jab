@@ -9,7 +9,7 @@ var (
 	DBFile                       = "hashes.db"
 	LogFile                      = "integrity.log"
 	AESKey                       = "ffa321e848eb4fef817376988bbeff80"
-	CheckIntervalSeconds         = 60
+	CheckIntervalSeconds         = 5
 	SensitiveFilesAndDirectories = []string{
 		// System Configuration Files
 		"/etc/passwd",
