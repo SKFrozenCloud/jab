@@ -7,6 +7,7 @@ import (
 
 var (
 	DBFile                       = "hashes.db"
+	LogFile                      = "integrity.log"
 	AESKey                       = "ffa321e848eb4fef817376988bbeff80"
 	CheckIntervalSeconds         = 60
 	SensitiveFilesAndDirectories = []string{
@@ -73,24 +74,46 @@ func main() {
 
 	for {
 		// Running
-		fmt.Println("Checking integrity...")
 		integrityChanges, err := CheckIntegrity(DBFile, SensitiveFilesAndDirectories)
 		if err != nil {
 			fmt.Printf("Error: %v", err)
 		}
 
 		// Result
-		fmt.Println("Files added:")
-		for i, v := range integrityChanges.Added {
-			fmt.Printf("Added file number %v; Path: %v\n", i, v.FilePath)
+		for _, v := range integrityChanges.Added {
+			err = SaveLogs(Log{
+				DateTime: time.Now(),
+				Type:     IntegrityChangesTypeAdded,
+				Data:     v,
+			}, LogFile)
+
+			if err != nil {
+				fmt.Printf("Error: %v", err)
+			}
 		}
-		fmt.Println("Files modified:")
-		for i, v := range integrityChanges.Modified {
-			fmt.Printf("Modified file number %v; Path: %v\n", i, v.FilePath)
+
+		for _, v := range integrityChanges.Modified {
+			err = SaveLogs(Log{
+				DateTime: time.Now(),
+				Type:     IntegrityChangesTypeModified,
+				Data:     v,
+			}, LogFile)
+
+			if err != nil {
+				fmt.Printf("Error: %v", err)
+			}
 		}
-		fmt.Println("Files removed:")
-		for i, v := range integrityChanges.Removed {
-			fmt.Printf("Removed file number %v; Path: %v\n", i, v.FilePath)
+
+		for _, v := range integrityChanges.Removed {
+			err = SaveLogs(Log{
+				DateTime: time.Now(),
+				Type:     IntegrityChangesTypeRemoved,
+				Data:     v,
+			}, LogFile)
+
+			if err != nil {
+				fmt.Printf("Error: %v", err)
+			}
 		}
 
 		time.Sleep(time.Duration(CheckIntervalSeconds) * time.Second)

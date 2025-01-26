@@ -4,5 +4,8 @@ main
 # Test database
 hashes.db
 
+# Integrity log
+integrity.log
+
 # TODO
 TODO.md

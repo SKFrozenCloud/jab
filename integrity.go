@@ -1,5 +1,17 @@
 package main
 
+// Type Struct
+
+type IntegrityChangeType string
+
+const (
+	IntegrityChangesTypeAdded    IntegrityChangeType = "Added"
+	IntegrityChangesTypeModified IntegrityChangeType = "Modified"
+	IntegrityChangesTypeRemoved  IntegrityChangeType = "Removed"
+)
+
+// Data structs
+
 type IntegrityChangesAdded struct {
 	FilePath FilePath
 	FileHash FileHash
