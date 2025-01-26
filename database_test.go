@@ -41,7 +41,7 @@ func TestSetupFileHashDatabase(t *testing.T) {
 	// Execute
 	db, err := SetupFileHashDatabase([]string{directoryOne, directoryFour, fileSix.Name(), fileSeven.Name()})
 	if err != nil {
-		t.Error("could not create file hash database")
+		t.Error("could not create file hash database", err)
 	}
 
 	// Validate
@@ -77,7 +77,7 @@ func TestSetupFileHashDatabase(t *testing.T) {
 	// Execute
 	db, err = SetupFileHashDatabase([]string{directoryOne})
 	if err != nil {
-		t.Error("could not create file hash database")
+		t.Error("could not create file hash database", err)
 	}
 
 	// Validate
@@ -106,13 +106,13 @@ func TestSaveAndLoadFileHashDatabase(t *testing.T) {
 	fileDB, _ := os.CreateTemp("", "hashes.db")
 	err := SaveFileHashDatabase(correctDB, fileDB.Name())
 	if err != nil {
-		t.Error("could not save db")
+		t.Error("could not save db", err)
 	}
 
 	// Load DB with function
 	db, err := LoadFileHashDatabase(fileDB.Name())
 	if err != nil {
-		t.Error("could not load db")
+		t.Error("could not load db", err)
 	}
 
 	// Validate
@@ -132,13 +132,13 @@ func TestSaveAndLoadFileHashDatabase(t *testing.T) {
 	fileDB, _ = os.CreateTemp("", "hashes.db")
 	err = SaveFileHashDatabase(correctDB, fileDB.Name())
 	if err != nil {
-		t.Error("could not save db")
+		t.Error("could not save db", err)
 	}
 
 	// Load DB with function
 	db, err = LoadFileHashDatabase(fileDB.Name())
 	if err != nil {
-		t.Error("could not load db")
+		t.Error("could not load db", err)
 	}
 
 	// Validate

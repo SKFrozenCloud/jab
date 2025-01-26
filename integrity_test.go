@@ -69,7 +69,7 @@ func TestCheckIntegrity(t *testing.T) {
 		fileSeven.Name(),
 	})
 	if err != nil {
-		t.Error("could not check integrity")
+		t.Error("could not check integrity", err)
 	}
 
 	if len(integrityChanges.Added) != 7 || len(integrityChanges.Modified) != 0 || len(integrityChanges.Removed) != 0 {
@@ -143,7 +143,7 @@ func TestCheckIntegrity(t *testing.T) {
 		fileSeven.Name(),
 	})
 	if err != nil {
-		t.Error("could not check integrity")
+		t.Error("could not check integrity", err)
 	}
 
 	if len(integrityChanges.Added) != 1 || len(integrityChanges.Modified) != 3 || len(integrityChanges.Removed) != 2 {
