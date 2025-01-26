@@ -12,8 +12,6 @@ type FileHash string
 
 type FileHashDatabase map[FilePath]FileHash
 
-var DatabaseEncryptionKey string = "ffa321e848eb4fef817376988bbeff80"
-
 func SetupFileHashDatabase(paths []string) (FileHashDatabase, error) {
 	fileHashDatabase := FileHashDatabase{}
 
@@ -66,7 +64,7 @@ func LoadFileHashDatabase(databasePath string) (FileHashDatabase, error) {
 		return nil, err
 	}
 
-	dbBytesDecrypted, err := DecryptAndVerify(string(dbBytes), DatabaseEncryptionKey)
+	dbBytesDecrypted, err := DecryptAndVerify(string(dbBytes), AESKey)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +89,7 @@ func SaveFileHashDatabase(db FileHashDatabase, databasePath string) error {
 		return err
 	}
 
-	jsonBytesEncrypted, err := SignAndEncrypt(string(jsonBytes), DatabaseEncryptionKey)
+	jsonBytesEncrypted, err := SignAndEncrypt(string(jsonBytes), AESKey)
 	if err != nil {
 		return err
 	}

@@ -7,7 +7,7 @@ import (
 
 var (
 	DBFile                       = "hashes.db"
-	AESKey                       = ""
+	AESKey                       = "ffa321e848eb4fef817376988bbeff80"
 	CheckIntervalSeconds         = 60
 	SensitiveFilesAndDirectories = []string{
 		// System Configuration Files
