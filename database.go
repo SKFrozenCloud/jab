@@ -12,6 +12,8 @@ type FileHash string
 
 type FileHashDatabase map[FilePath]FileHash
 
+var DatabaseEncryptionKey string = "ffa321e848eb4fef817376988bbeff80"
+
 func SetupFileHashDatabase(paths []string) (FileHashDatabase, error) {
 	fileHashDatabase := FileHashDatabase{}
 
@@ -64,8 +66,13 @@ func LoadFileHashDatabase(databasePath string) (FileHashDatabase, error) {
 		return nil, err
 	}
 
+	dbBytesDecrypted, err := DecryptAndVerify(string(dbBytes), DatabaseEncryptionKey)
+	if err != nil {
+		return nil, err
+	}
+
 	var db FileHashDatabase
-	err = json.Unmarshal([]byte(dbBytes), &db)
+	err = json.Unmarshal([]byte(dbBytesDecrypted), &db)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +90,13 @@ func SaveFileHashDatabase(db FileHashDatabase, databasePath string) error {
 	if err != nil {
 		return err
 	}
-	fileDB.Write(jsonBytes)
+
+	jsonBytesEncrypted, err := SignAndEncrypt(string(jsonBytes), DatabaseEncryptionKey)
+	if err != nil {
+		return err
+	}
+
+	fileDB.Write([]byte(jsonBytesEncrypted))
 
 	return nil
 }
